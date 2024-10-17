@@ -10,13 +10,9 @@ export default function HankoAuth() {
   const router = useRouter();
 
   const [hanko, setHanko] = useState<Hanko>();
-
-  useEffect(() => {
-    import("@teamhanko/hanko-elements").then(({ Hanko }) =>
-      setHanko(new Hanko(hankoApi))
-    );
-  }, []);
-
+ 
+  useEffect(() => setHanko(new Hanko(hankoApi)), []);
+ 
   const redirectAfterLogin = useCallback(() => {
     // successfully logged in, redirect to a page in your application
     router.replace("/dashboard");
@@ -24,7 +20,7 @@ export default function HankoAuth() {
 
   useEffect(
     () =>
-      hanko?.onAuthFlowCompleted(() => {
+      hanko?.onSessionCreated(() => {
         redirectAfterLogin();
       }),
     [hanko, redirectAfterLogin]
